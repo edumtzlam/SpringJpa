@@ -1,10 +1,11 @@
 package com.mdf.springjpa.Spring.Jpa.service.impl;
 
-import java.security.Guard;
 import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mdf.springjpa.Spring.Jpa.models.Guardian;
 import com.mdf.springjpa.Spring.Jpa.models.Student;
@@ -12,6 +13,7 @@ import com.mdf.springjpa.Spring.Jpa.repository.IStudentRepository;
 import com.mdf.springjpa.Spring.Jpa.service.IStudentService;
 
 @Service
+@Transactional
 public class StudentServiceImpl implements IStudentService {
 
 	@Autowired
@@ -50,13 +52,28 @@ public class StudentServiceImpl implements IStudentService {
 
 	@Override
 	public Boolean removeStudent(Student student) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+//			Guardian objGuardian = Guardian.builder().name(student.getGuardian().getName())
+//					.email(student.getGuardian().getEmail()).mobile(student.getGuardian().getMobile()).build();
+//			Student objStudentDelete = Student.builder().studentId(student.getStudentId())
+//					.firstName(student.getFirstName()).lastName(student.getLastName()).eMailId(student.getEMailId())
+//					.guardian(objGuardian).build();
+//			this._studentRepository.delete(objStudentDelete);
+			this._studentRepository.delete(student);
+			return true;
+		} catch (Exception e) {
+			System.out.println(e);
+			return false;
+		}
 	}
 
 	@Override
 	public List<Student> retreiveAllStudent() {
-		return this._studentRepository.findAll();
+//		Usando los metodos del Repositorio
+//		return this._studentRepository.findAll();
+
+//		Usando un Store Procedure de la base de datos en MySQL
+		return this._studentRepository.getAllStudents();
 	}
 
 }
