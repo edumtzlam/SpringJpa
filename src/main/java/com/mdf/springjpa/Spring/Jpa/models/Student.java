@@ -45,9 +45,13 @@ public class Student {
 	private String firstName;
 	private String lastName;
 	@Column(name = "email_address", nullable = false)
-	@NotBlank(message = "field 'eMailId' is mandatory")
+	@NotBlank(message = "field 'emailId' is mandatory")
 	@Pattern(regexp = "^[A-Za-z0-9+_.-]+@(.+)$", message = "email no valido.")
-	private String eMailId;
+	private String emailId;
+	@NotBlank(message = "field 'password' is mandatory")
+	private String password;
+	@NotBlank(message = "field 'role' is mandatory")
+	private String role;
 
 	@Embedded
 	private Guardian guardian;

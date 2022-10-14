@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,20 +20,23 @@ public class StudentServiceImpl implements IStudentService {
 	@Autowired
 	IStudentRepository _studentRepository;
 
+	@Autowired
+	PasswordEncoder _passwordEncoder;
+	
 	@Override
 	public Student AddStudent(Student student) {
 		Guardian objGuardian = Guardian.builder().name(student.getGuardian().getName())
 				.email(student.getGuardian().getEmail()).mobile(student.getGuardian().getMobile()).build();
 
 		Student objStudent = Student.builder().firstName(student.getFirstName()).lastName(student.getLastName())
-				.eMailId(student.getEMailId()).guardian(objGuardian).build();
+				.emailId(student.getEmailId()).role(student.getRole()).password(_passwordEncoder.encode(student.getPassword())).guardian(objGuardian).build();
 		this._studentRepository.save(objStudent);
 		return objStudent;
 	}
 
 	@Override
 	public Student FindStudentByEmail(String email) {
-		return this._studentRepository.findByeMailId(email);
+		return this._studentRepository.findByEmailId(email);
 	}
 
 	@Override
@@ -41,7 +45,7 @@ public class StudentServiceImpl implements IStudentService {
 			Guardian objGuardian = Guardian.builder().name(student.getGuardian().getName())
 					.email(student.getGuardian().getEmail()).mobile(student.getGuardian().getMobile()).build();
 			Student objStudentUpdate = Student.builder().studentId(student.getStudentId())
-					.firstName(student.getFirstName()).lastName(student.getLastName()).eMailId(student.getEMailId())
+					.firstName(student.getFirstName()).lastName(student.getLastName()).emailId(student.getEmailId())
 					.guardian(objGuardian).build();
 			this._studentRepository.save(objStudentUpdate);
 			return true;

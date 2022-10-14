@@ -9,7 +9,7 @@ import com.mdf.springjpa.Spring.Jpa.models.Student;
 
 public interface IStudentRepository extends JpaRepository<Student, Long> {
 //	Para hacer un query sin hacer un select
-	public Student findByeMailId(String emailId);
+	public Student findByEmailId(String emailId);
 
 	public List<Student> findByGuardianNameNotNull();
 
