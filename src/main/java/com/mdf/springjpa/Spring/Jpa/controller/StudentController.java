@@ -25,7 +25,7 @@ public class StudentController {
 	@Autowired
 	private IStudentService _studentService;
 
-	@PostMapping
+	@PostMapping("/register")
 	public ResponseEntity<Student> createNewStudent(@Valid @RequestBody Student student) {
 		Student objStudent = _studentService.AddStudent(student);
 		return new ResponseEntity<>(objStudent, HttpStatus.CREATED);
@@ -43,13 +43,13 @@ public class StudentController {
 		return new ResponseEntity<List<Student>>(arrStudents, HttpStatus.OK);
 	}
 
-	@PutMapping
+	@PutMapping("/update")
 	public ResponseEntity<Boolean> updateStudent(@Valid @RequestBody Student student) {
 		Boolean objSucces = this._studentService.updateStudent(student);
 		return new ResponseEntity<>(objSucces, HttpStatus.OK);
 	}
 
-	@DeleteMapping
+	@DeleteMapping("/delete")
 	public ResponseEntity<Boolean> deleteStudent(@Valid @RequestBody Student student) {
 		Boolean objSucces = this._studentService.removeStudent(student);
 		return new ResponseEntity<>(objSucces, HttpStatus.OK);

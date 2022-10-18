@@ -2,6 +2,7 @@ package com.mdf.springjpa.Spring.Jpa.config;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 //import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.mdf.springjpa.Spring.Jpa.models.Authority;
 import com.mdf.springjpa.Spring.Jpa.models.Student;
 import com.mdf.springjpa.Spring.Jpa.repository.IStudentRepository;
 
@@ -56,12 +58,21 @@ public class StudentDetailsConfig implements AuthenticationProvider {
 			if (_passwordEncoder.matches(password, students.getPassword())) {
 				List<GrantedAuthority> authorities = new ArrayList<>();
 				authorities.add(new SimpleGrantedAuthority(students.getRole()));
-				return new UsernamePasswordAuthenticationToken(userName, password, authorities);
+				return new UsernamePasswordAuthenticationToken(userName, password,
+						getGrantedAuthorities(students.getAuthorities()));
 			} else {
 				throw new BadCredentialsException("No user registered with those credentials");
 			}
 		}
 		return null;
+	}
+
+	private List<GrantedAuthority> getGrantedAuthorities(Set<Authority> authorities) {
+		List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+		for (Authority authority : authorities) {
+			grantedAuthorities.add(new SimpleGrantedAuthority(authority.getName()));
+		}
+		return grantedAuthorities;
 	}
 
 	@Override
