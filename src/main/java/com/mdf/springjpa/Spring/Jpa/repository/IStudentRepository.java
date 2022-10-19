@@ -15,4 +15,7 @@ public interface IStudentRepository extends JpaRepository<Student, Long> {
 
 	@Procedure
 	public List<Student> getAllStudents();
+	
+	@Procedure
+	public List<Student> getAllStudentsAuthorities(String email);
 }

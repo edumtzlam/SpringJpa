@@ -2,7 +2,6 @@ package com.mdf.springjpa.Spring.Jpa.service.impl;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,14 +21,15 @@ public class StudentServiceImpl implements IStudentService {
 
 	@Autowired
 	PasswordEncoder _passwordEncoder;
-	
+
 	@Override
 	public Student AddStudent(Student student) {
 		Guardian objGuardian = Guardian.builder().name(student.getGuardian().getName())
 				.email(student.getGuardian().getEmail()).mobile(student.getGuardian().getMobile()).build();
 
 		Student objStudent = Student.builder().firstName(student.getFirstName()).lastName(student.getLastName())
-				.emailId(student.getEmailId()).role(student.getRole()).password(_passwordEncoder.encode(student.getPassword())).guardian(objGuardian).build();
+				.emailId(student.getEmailId()).role(student.getRole())
+				.password(_passwordEncoder.encode(student.getPassword())).guardian(objGuardian).build();
 		this._studentRepository.save(objStudent);
 		return objStudent;
 	}
@@ -78,6 +78,15 @@ public class StudentServiceImpl implements IStudentService {
 
 //		Usando un Store Procedure de la base de datos en MySQL
 		return this._studentRepository.getAllStudents();
+	}
+
+	public List<Student> retriveAllStudentsAuthorities() {
+		try {
+			List<Student> studensAuth = this._studentRepository.getAllStudentsAuthorities("nomapl6@gmail.com");
+			return studensAuth;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 }

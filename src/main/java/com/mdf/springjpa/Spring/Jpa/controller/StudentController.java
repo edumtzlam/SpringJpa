@@ -43,6 +43,12 @@ public class StudentController {
 		return new ResponseEntity<List<Student>>(arrStudents, HttpStatus.OK);
 	}
 
+	@GetMapping("/Autorities")
+	public ResponseEntity<List<Student>> getAllStudentsAuthorities() {
+		List<Student> arrStudents = this._studentService.retriveAllStudentsAuthorities();
+		return new ResponseEntity<List<Student>>(arrStudents, HttpStatus.OK);
+	}
+
 	@PutMapping("/update")
 	public ResponseEntity<Boolean> updateStudent(@Valid @RequestBody Student student) {
 		Boolean objSucces = this._studentService.updateStudent(student);

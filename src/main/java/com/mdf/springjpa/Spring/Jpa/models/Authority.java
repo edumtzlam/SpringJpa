@@ -17,12 +17,14 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "authorities")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -36,6 +38,6 @@ public class Authority {
 	private String name;
 
 	@ManyToMany(mappedBy = "authorities", fetch = FetchType.LAZY)
-//	@JsonBackReference
+	@JsonBackReference
 	private Set<Student> student;
 }
