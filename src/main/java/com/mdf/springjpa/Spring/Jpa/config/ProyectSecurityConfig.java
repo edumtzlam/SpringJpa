@@ -12,8 +12,14 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class ProyectSecurityConfig {
 
-	@Value("${URLS.Authenticated}")
-	private String authenticatedURL;
+//	@Value("${URLS.Authenticated}")
+//	private String authenticatedURL;
+
+	@Value("${URLS.Authenticated.WithoutRole}")
+	private String authenticatedURLWithoutRole;
+
+	@Value("${URLS.Authenticated.WithBalanceRole}")
+	private String authenticatedURLWithBalanceRole;
 
 	@Value("${URLS.Permitall}")
 	private String permitallURL;
@@ -26,11 +32,14 @@ public class ProyectSecurityConfig {
 //		Permit all request
 //		http.authorizeRequests().anyRequest().permitAll().and().formLogin().and().httpBasic();
 
-		String[] listUrlAuthenticated = this.authenticatedURL.split(",");
+//		String[] listUrlAuthenticated = this.authenticatedURL.split(",");
+		String[] listUrlAuthenticated = this.authenticatedURLWithoutRole.split(",");
+		String[] listUrlAuthenticatedWithBalanceRole = this.authenticatedURLWithBalanceRole.split(",");
 		String[] listUrlPermitall = this.permitallURL.split(",");
 //		Permit just what you want on matches and csrf permit post for all user
 		http.csrf().disable().authorizeRequests().antMatchers(listUrlAuthenticated).authenticated()
-				.antMatchers(listUrlPermitall).permitAll().and().formLogin().and().httpBasic();
+				.antMatchers(listUrlAuthenticatedWithBalanceRole).hasAnyAuthority("VIEWBALANCE").antMatchers(listUrlPermitall)
+				.permitAll().and().formLogin().and().httpBasic();
 //		http.authorizeRequests().antMatchers("/api/**").permitAll().and().formLogin().and().httpBasic().and().csrf().disable();
 		return http.build();
 	}

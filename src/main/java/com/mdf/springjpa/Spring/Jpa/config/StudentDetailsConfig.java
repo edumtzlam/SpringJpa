@@ -56,8 +56,8 @@ public class StudentDetailsConfig implements AuthenticationProvider {
 		Student students = this._studentRepository.findByEmailId(userName);
 		if (students != null) {
 			if (_passwordEncoder.matches(password, students.getPassword())) {
-				List<GrantedAuthority> authorities = new ArrayList<>();
-				authorities.add(new SimpleGrantedAuthority(students.getRole()));
+//				List<GrantedAuthority> authorities = new ArrayList<>();
+//				authorities.add(new SimpleGrantedAuthority(students.getRole()));
 				return new UsernamePasswordAuthenticationToken(userName, password,
 						getGrantedAuthorities(students.getAuthorities()));
 			} else {

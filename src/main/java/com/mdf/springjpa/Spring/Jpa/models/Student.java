@@ -26,6 +26,8 @@ import org.hibernate.annotations.ManyToAny;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -76,8 +78,9 @@ public class Student {
 	@JoinTable(name = "student_authorities_table", joinColumns = {
 			@JoinColumn(name = "student_id", referencedColumnName = "student_id") }, inverseJoinColumns = {
 					@JoinColumn(name = "authorities_id", referencedColumnName = "authorities_id") })
-	@JsonBackReference
+//	@JsonManagedReference
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private Set<Authority> authorities;
 }
