@@ -8,6 +8,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+
+import com.mdf.springjpa.Spring.Jpa.filter.RequestValidationBeforeFilter;
 
 @Configuration
 public class ProyectSecurityConfig {
@@ -37,9 +40,10 @@ public class ProyectSecurityConfig {
 		String[] listUrlAuthenticatedWithBalanceRole = this.authenticatedURLWithBalanceRole.split(",");
 		String[] listUrlPermitall = this.permitallURL.split(",");
 //		Permit just what you want on matches and csrf permit post for all user
-		http.csrf().disable().authorizeRequests().antMatchers(listUrlAuthenticated).authenticated()
-				.antMatchers(listUrlAuthenticatedWithBalanceRole).hasAnyAuthority("VIEWBALANCE").antMatchers(listUrlPermitall)
-				.permitAll().and().formLogin().and().httpBasic();
+		http.csrf().disable().addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
+				.authorizeRequests().antMatchers(listUrlAuthenticated).authenticated()
+				.antMatchers(listUrlAuthenticatedWithBalanceRole).hasAnyAuthority("VIEWBALANCE")
+				.antMatchers(listUrlPermitall).permitAll().and().formLogin().and().httpBasic();
 //		http.authorizeRequests().antMatchers("/api/**").permitAll().and().formLogin().and().httpBasic().and().csrf().disable();
 		return http.build();
 	}
