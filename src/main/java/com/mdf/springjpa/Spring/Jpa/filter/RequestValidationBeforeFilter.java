@@ -39,11 +39,16 @@ public class RequestValidationBeforeFilter implements Filter {
 					decoded = Base64.getDecoder().decode(base64Token);
 					String token = new String(decoded, credentialsCharset);
 					System.out.println(token);
-					int delim = token.indexOf(';');
+					int delim = token.indexOf(':');
 					System.out.println(delim);
 					System.out.println(decoded);
 					if (delim == -1)
 						throw new BadCredentialsException("Invalid Basic Authentication");
+					String email = token.substring(0, delim);
+					if (email.toLowerCase().contains("nomapl6")) {
+						res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+						return;
+					}
 				} catch (IllegalArgumentException e) {
 					System.out.println(e);
 				}
