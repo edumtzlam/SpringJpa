@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import com.mdf.springjpa.Spring.Jpa.filter.AuthoritiesLoggingAfterFilter;
 import com.mdf.springjpa.Spring.Jpa.filter.RequestValidationBeforeFilter;
 
 @Configuration
@@ -41,6 +42,7 @@ public class ProyectSecurityConfig {
 		String[] listUrlPermitall = this.permitallURL.split(",");
 //		Permit just what you want on matches and csrf permit post for all user
 		http.csrf().disable().addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
+				.addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
 				.authorizeRequests().antMatchers(listUrlAuthenticated).authenticated()
 				.antMatchers(listUrlAuthenticatedWithBalanceRole).hasAnyAuthority("VIEWBALANCE")
 				.antMatchers(listUrlPermitall).permitAll().and().formLogin().and().httpBasic();

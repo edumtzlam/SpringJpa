@@ -45,10 +45,10 @@ public class RequestValidationBeforeFilter implements Filter {
 					if (delim == -1)
 						throw new BadCredentialsException("Invalid Basic Authentication");
 					String email = token.substring(0, delim);
-					if (email.toLowerCase().contains("nomapl6")) {
-						res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-						return;
-					}
+//					if (email.toLowerCase().contains("nomapl6")) {
+//						res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//						return;
+//					}
 				} catch (IllegalArgumentException e) {
 					System.out.println(e);
 				}
