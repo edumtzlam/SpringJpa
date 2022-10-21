@@ -11,6 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import com.mdf.springjpa.Spring.Jpa.filter.AuthoritiesLoggingAfterFilter;
+import com.mdf.springjpa.Spring.Jpa.filter.AuthoritiesLoggingAtFilter;
 import com.mdf.springjpa.Spring.Jpa.filter.RequestValidationBeforeFilter;
 
 @Configuration
@@ -43,9 +44,10 @@ public class ProyectSecurityConfig {
 //		Permit just what you want on matches and csrf permit post for all user
 		http.csrf().disable().addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
 				.addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
-				.authorizeRequests().antMatchers(listUrlAuthenticated).authenticated()
-				.antMatchers(listUrlAuthenticatedWithBalanceRole).hasAnyAuthority("VIEWBALANCE")
-				.antMatchers(listUrlPermitall).permitAll().and().formLogin().and().httpBasic();
+				.addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class).authorizeRequests()
+				.antMatchers(listUrlAuthenticated).authenticated().antMatchers(listUrlAuthenticatedWithBalanceRole)
+				.hasAnyAuthority("VIEWBALANCE").antMatchers(listUrlPermitall).permitAll().and().formLogin().and()
+				.httpBasic();
 //		http.authorizeRequests().antMatchers("/api/**").permitAll().and().formLogin().and().httpBasic().and().csrf().disable();
 		return http.build();
 	}
