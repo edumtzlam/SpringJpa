@@ -74,16 +74,14 @@ public class Student {
 
 //	El Set<> es un array que no puede tener valores duplicados
 //	Con todas esta instrucciones se crea automaticamente la relacion con la tabla cursos
-	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JsonIgnore
+	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
 	@ToString.Exclude
 	private Set<Course> courses;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany
 	@JoinTable(name = "student_authorities_table", joinColumns = {
 			@JoinColumn(name = "student_id", referencedColumnName = "student_id") }, inverseJoinColumns = {
 					@JoinColumn(name = "authorities_id", referencedColumnName = "authorities_id") })
 	@ToString.Exclude
-//	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private Set<Authority> authorities;
 }

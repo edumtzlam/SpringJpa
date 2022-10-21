@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 //import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -24,6 +26,7 @@ import com.mdf.springjpa.Spring.Jpa.models.Student;
 import com.mdf.springjpa.Spring.Jpa.repository.IStudentRepository;
 
 @Service
+@Transactional
 public class StudentDetailsConfig implements AuthenticationProvider {
 
 	@Autowired
@@ -56,8 +59,6 @@ public class StudentDetailsConfig implements AuthenticationProvider {
 		Student students = this._studentRepository.findByEmailId(userName);
 		if (students != null) {
 			if (_passwordEncoder.matches(password, students.getPassword())) {
-//				List<GrantedAuthority> authorities = new ArrayList<>();
-//				authorities.add(new SimpleGrantedAuthority(students.getRole()));
 				return new UsernamePasswordAuthenticationToken(userName, password,
 						getGrantedAuthorities(students.getAuthorities()));
 			} else {

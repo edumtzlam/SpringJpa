@@ -40,8 +40,8 @@ public class ProyectSecurityConfig {
 		String[] listUrlAuthenticatedWithBalanceRole = this.authenticatedURLWithBalanceRole.split(",");
 		String[] listUrlPermitall = this.permitallURL.split(",");
 //		Permit just what you want on matches and csrf permit post for all user
-		http.csrf().disable().addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
-				.authorizeRequests().antMatchers(listUrlAuthenticated).authenticated()
+//		.addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
+		http.csrf().disable().authorizeRequests().antMatchers(listUrlAuthenticated).authenticated()
 				.antMatchers(listUrlAuthenticatedWithBalanceRole).hasAnyAuthority("VIEWBALANCE")
 				.antMatchers(listUrlPermitall).permitAll().and().formLogin().and().httpBasic();
 //		http.authorizeRequests().antMatchers("/api/**").permitAll().and().formLogin().and().httpBasic().and().csrf().disable();
