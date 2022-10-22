@@ -15,4 +15,8 @@ URLS:
    Authenticated: 
       WithoutRole: /api/student/byEmail,/api/student/update,/api/student/All
       WithBalanceRole: /api/course/**
-   Permitall: /api/student/register
+   Permitall: /api/student/register,/api/auth/signin
+   
+App:
+   jwtSecret: YXNkamZoYWtzaGZ1_aW93ZXVyMjM5OGpya2xtY25tPCwu.
+   jwtExpirationInMs: 360000

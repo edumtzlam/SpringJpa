@@ -25,9 +25,10 @@ import com.mdf.springjpa.Spring.Jpa.models.Authority;
 import com.mdf.springjpa.Spring.Jpa.models.Student;
 import com.mdf.springjpa.Spring.Jpa.repository.IStudentRepository;
 
-@Service
-@Transactional
-public class StudentDetailsConfig implements AuthenticationProvider {
+//@Service
+//@Transactional
+//implements AuthenticationProvider ** se la quitamos de abajo.
+public class StudentDetailsConfig {
 
 	@Autowired
 	private IStudentRepository _studentRepository;
@@ -51,7 +52,7 @@ public class StudentDetailsConfig implements AuthenticationProvider {
 //		return null;
 //	}
 
-	@Override
+//	@Override
 	public org.springframework.security.core.Authentication authenticate(
 			org.springframework.security.core.Authentication authentication) throws AuthenticationException {
 		String userName = authentication.getName();
@@ -76,7 +77,7 @@ public class StudentDetailsConfig implements AuthenticationProvider {
 		return grantedAuthorities;
 	}
 
-	@Override
+//	@Override
 	public boolean supports(Class<?> authentication) {
 		return (UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));
 	}
