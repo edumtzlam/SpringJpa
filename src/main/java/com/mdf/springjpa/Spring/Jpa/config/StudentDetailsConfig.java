@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,10 +26,10 @@ import com.mdf.springjpa.Spring.Jpa.models.Authority;
 import com.mdf.springjpa.Spring.Jpa.models.Student;
 import com.mdf.springjpa.Spring.Jpa.repository.IStudentRepository;
 
-//@Service
-//@Transactional
+@Service
+@Transactional
 //implements AuthenticationProvider ** se la quitamos de abajo.
-public class StudentDetailsConfig {
+public class StudentDetailsConfig implements AuthenticationProvider {
 
 	@Autowired
 	private IStudentRepository _studentRepository;
@@ -53,18 +54,16 @@ public class StudentDetailsConfig {
 //	}
 
 //	@Override
-	public org.springframework.security.core.Authentication authenticate(
-			org.springframework.security.core.Authentication authentication) throws AuthenticationException {
+	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String userName = authentication.getName();
 		String password = authentication.getCredentials().toString();
 		Student students = this._studentRepository.findByEmailId(userName);
 		if (students != null) {
-			if (_passwordEncoder.matches(password, students.getPassword())) {
+			if (_passwordEncoder.matches(password, students.getPassword()))
 				return new UsernamePasswordAuthenticationToken(userName, password,
 						getGrantedAuthorities(students.getAuthorities()));
-			} else {
+			else
 				throw new BadCredentialsException("No user registered with those credentials");
-			}
 		}
 		return null;
 	}
