@@ -21,6 +21,7 @@ import com.mdf.springjpa.Spring.Jpa.filter.AuthoritiesLoggingAfterFilter;
 import com.mdf.springjpa.Spring.Jpa.filter.AuthoritiesLoggingAtFilter;
 import com.mdf.springjpa.Spring.Jpa.filter.RequestValidationBeforeFilter;
 import com.mdf.springjpa.Spring.Jpa.security.JWTTokenGeneratorFilter;
+import com.mdf.springjpa.Spring.Jpa.security.JWTTokenValidatorFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -52,8 +53,8 @@ public class ProyectSecurityConfig {
 		String[] listUrlPermitall = this.permitallURL.split(",");
 //		Permit just what you want on matches and csrf permit post for all user
 		http.csrf().disable()
-//		.addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
-				.addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class).sessionManagement()
+				.addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
+				.addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class).sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 //				.addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
 				.authorizeRequests().antMatchers(listUrlAuthenticated).authenticated()
